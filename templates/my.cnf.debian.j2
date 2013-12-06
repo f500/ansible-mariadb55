@@ -1,0 +1,122 @@
+[client]
+port   = 3306
+socket = {{ mariadb_socket }}
+
+[mysql]
+character-sets-dir    = {{ mariadb_charsets_dir }}
+default-character-set = utf8
+
+[mysqladmin]
+character-sets-dir    = {{ mariadb_charsets_dir }}
+default-character-set = utf8
+
+[mysqlcheck]
+character-sets-dir    = {{ mariadb_charsets_dir }}
+default-character-set = utf8
+
+[mysqldump]
+character-sets-dir    = {{ mariadb_charsets_dir }}
+default-character-set = utf8
+max-allowed-packet    = 16M
+quick
+quote-names
+
+[mysqlimport]
+character-sets-dir    = {{ mariadb_charsets_dir }}
+default-character-set = utf8
+
+[mysqlshow]
+character-sets-dir    = {{ mariadb_charsets_dir }}
+default-character-set = utf8
+
+[myisamchk]
+character-sets-dir = {{ mariadb_charsets_dir }}
+
+[myisampack]
+character-sets-dir = {{ mariadb_charsets_dir }}
+
+[mysqld-safe]
+err-log = {{ mariadb_mysql_errorlog }}
+nice    = 0
+socket  = {{ mariadb_socket }}
+
+[mysqld]
+
+basedir                  = {{ mariadb_base_dir }}
+character-set-filesystem = binary
+character-set-server     = utf8
+collation-server         = utf8_general_ci
+datadir                  = {{ mariadb_data_dir }}
+default-storage-engine   = InnoDB
+key-buffer               = 64M
+lc-messages              = en_US
+lc-messages-dir          = {{ mariadb_share_dir }}
+log-bin                  = mysqld-bin
+log-error                = {{ mariadb_mysqld_errorlog }}
+log-warnings             = 2
+long-query-time          = {{ mariadb_long_query_time }}
+max-allowed-packet       = 1M
+myisam-sort-buffer       = 8M
+net-buffer-length        = 16K
+pid-file                 = {{ mariadb_pid }}
+port                     = {{ mariadb_port }}
+read-buffer              = 256K
+read-rnd-buffer          = 512K
+server-id                = 1
+skip-external-locking
+socket                   = {{ mariadb_socket }}
+sort-buffer              = 8M
+table-open-cache         = 64
+thread-cache-size        = 128
+tmpdir                   = /tmp/
+user                     = mysql
+
+innodb-additional-mem-pool     = 4M
+innodb-buffer-pool-size        = 64M
+innodb-data-file-path          = ibdata1:10M:autoextend:max:128M
+innodb-file-per-table
+innodb-flush-log-at-trx-commit = 1
+innodb-lock-wait-timeout       = 50
+innodb-log-buffer              = 8M
+innodb-log-file-size           = 5M
+innodb-log-files-in-group      = 2
+
+{% if mariadb_skip_charset_handshake %}
+skip-character-set-client-handshake
+{% endif %}
+
+{% if mariadb_skip_networking %}
+skip-networking
+{% elif mariadb_bind_address %}
+bind-address = {{ mariadb_bind_address }}
+{% endif %}
+
+{% if mariadb_mysqld_slowlog %}
+slow-query-log
+slow-query-log-file = {{ mariadb_mysqld_slowlog }}
+{% endif %}
+
+{% if mariadb_query_cache_size %}
+query-cache-size  = {{ mariadb_query_cache_size }}
+{% if mariadb-query-cache-limit %}
+query-cache-limit = {{ mariadb_query_cache_limit }}
+{% endif %}
+{% endif %}
+
+[isamchk]
+key-buffer   = 32M
+read-buffer  = 2M
+sort-buffer  = 32M
+write-buffer = 2M
+
+[myisamchk]
+key-buffer   = 32M
+read-buffer  = 2M
+sort-buffer  = 32M
+write-buffer = 2M
+
+[mysqlhotcopy]
+interactive-timeout
+
+# overrides
+!includedir /etc/mysql/conf.d/

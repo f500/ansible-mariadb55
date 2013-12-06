@@ -1,0 +1,38 @@
+---
+
+- include: debian.yml
+  when: ansible_os_family == "Debian"
+
+- include: gentoo.yml
+  when: ansible_os_family == "Gentoo"
+
+# all
+
+- name: cleanup old files
+  file: "path={{ item }} state=absent"
+  with_items:
+    - /var/log/mysql.err
+    - /var/log/mysql.log
+
+- name: start mariadb
+  service: name=mysql enabled=yes state=started
+  register: started_mariadb
+
+- name: temporarily remove root/.my.cnf
+  file: path=/root/.my.cnf state=absent
+  when: started_mariadb|changed or installed_mariadb|changed or installed_mariadb_database|changed
+
+- name: prepare secure mariadb
+  template: src=mariadb_init.sql.j2 dest=/tmp/mariadb_init.sql owner=root group=root mode=0600
+  when: started_mariadb|changed or installed_mariadb|changed or installed_mariadb_database|changed
+
+- name: secure mariadb
+  shell: mysql mysql < /tmp/mariadb_init.sql
+  when: started_mariadb|changed or installed_mariadb|changed or installed_mariadb_database|changed
+
+- name: cleanup secure mariadb
+  file: path=/tmp/mariadb_init.sql state=absent
+  when: started_mariadb|changed or installed_mariadb|changed or installed_mariadb_database|changed
+
+- name: write root/.my.cnf
+  template: src=.my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600

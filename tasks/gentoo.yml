@@ -1,0 +1,29 @@
+---
+
+- name: gentoo | write virtual/mysql accept-keywords
+  lineinfile: dest=/etc/portage/package.accept_keywords create=yes regexp='virtual/mysql' line='virtual/mysql ~amd64'
+
+- name: gentoo | write mariadb accept-keywords
+  lineinfile: dest=/etc/portage/package.accept_keywords create=yes regexp='dev-db/mariadb' line='dev-db/mariadb ~amd64'
+
+- name: gentoo | write mariadb use-flags
+  lineinfile: dest=/etc/portage/package.use create=yes regexp='dev-db/mariadb' line='dev-db/mariadb -perl'
+
+- name: gentoo | install mariadb
+  portage: package=dev-db/mariadb state=present
+  register: installed_mariadb
+
+- name: gentoo | enable mysqladmin bash-completion
+  command: eselect bashcomp enable --global mysqladmin creates=/etc/bash_completion.d/mysqladmin
+
+- name: gentoo | install mysql-python
+  portage: package=dev-python/mysql-python state=present
+
+- name: gentoo | write my.cnf
+  template: "src=my.cnf.gentoo.j2 dest={{ mariadb_config }} owner=root group=root mode=0644"
+  notify:
+    - restart mariadb
+
+- name: gentoo | install database
+  command: "{{ mariadb_install_db }} --basedir={{ mariadb_base_dir }} --log-warnings=0 --loose-skip-grant-tables --loose-skip-host-cache --loose-skip-name-resolve --loose-skip-networking --loose-skip-slave-start --loose-skip-innodb --loose-skip-ssl --loose-skip-log-bin --loose-skip-relay-log --loose-skip-slow-query-log --loose-skip-external-locking --loose-skip-log-slave-updates --user=mysql creates='{{ mariadb_data_dir }}/mysql'"
+  register: installed_mariadb_database
