@@ -14,7 +14,7 @@
   register: installed_mariadb
 
 - name: gentoo | enable mysqladmin bash-completion
-  command: eselect bashcomp enable --global mysqladmin creates=/etc/bash_completion.d/mysqladmin
+  eselect: module=bashcomp action=enable target=mysqladmin options='--global'
 
 - name: gentoo | install mysql-python
   portage: package=dev-python/mysql-python state=present
