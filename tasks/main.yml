@@ -1,12 +1,25 @@
 ---
 
-- include: debian.yml
-  when: ansible_os_family == "Debian"
+- name: add mariadb key
+  apt_key: "id=1BB943DB url=http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0xcbcb082a1bb943db state=present"
 
-- include: gentoo.yml
-  when: ansible_os_family == "Gentoo"
+- name: add mariadb repository
+  apt_repository: repo='deb http://mirror.i3d.net/pub/mariadb/repo/5.5/debian wheezy main' state=present update_cache=no
 
-# all
+- name: add mariadb source repository
+  apt_repository: repo='deb-src http://mirror.i3d.net/pub/mariadb/repo/5.5/debian wheezy main' state=present update_cache=yes
+
+- name: install mariadb
+  apt: pkg=mariadb-server state=present
+  register: installed_mariadb
+
+- name: install python-mysqldb
+  apt: pkg=python-mysqldb state=present
+
+- name: write my.cnf
+  template: "src=my.cnf.j2 dest={{ mariadb_config }} owner=root group=root mode=0644"
+  notify:
+    - restart mariadb
 
 - name: cleanup old files
   file: "path={{ item }} state=absent"
@@ -20,19 +33,19 @@
 
 - name: temporarily remove root/.my.cnf
   file: path=/root/.my.cnf state=absent
-  when: started_mariadb|changed or installed_mariadb|changed or installed_mariadb_database|changed
+  when: started_mariadb|changed or installed_mariadb|changed
 
 - name: prepare secure mariadb
   template: src=mariadb_init.sql.j2 dest=/tmp/mariadb_init.sql owner=root group=root mode=0600
-  when: started_mariadb|changed or installed_mariadb|changed or installed_mariadb_database|changed
+  when: started_mariadb|changed or installed_mariadb|changed
 
 - name: secure mariadb
   shell: mysql mysql < /tmp/mariadb_init.sql
-  when: started_mariadb|changed or installed_mariadb|changed or installed_mariadb_database|changed
+  when: started_mariadb|changed or installed_mariadb|changed
 
 - name: cleanup secure mariadb
   file: path=/tmp/mariadb_init.sql state=absent
-  when: started_mariadb|changed or installed_mariadb|changed or installed_mariadb_database|changed
+  when: started_mariadb|changed or installed_mariadb|changed
 
 - name: write root/.my.cnf
   template: src=.my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600

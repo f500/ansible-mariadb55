@@ -5,7 +5,6 @@ mariadb_bind_address: 127.0.0.1
 mariadb_charsets_dir: /usr/share/mysql/charsets
 mariadb_config: /etc/mysql/my.cnf
 mariadb_data_dir: /var/lib/mysql
-mariadb_install_db: /usr/share/mysql/scripts/mysql_install_db
 mariadb_long_query_time: 10
 mariadb_mysql_errorlog: /var/log/mysql/mysql.err
 mariadb_mysqld_errorlog: /var/log/mysql/mysqld.err
