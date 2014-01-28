@@ -1,0 +1,3 @@
+Package: *
+Pin: origin mirror.i3d.net
+Pin-Priority: 1000
