@@ -9,7 +9,9 @@
 - name: add mariadb source repository
   apt_repository: repo='deb-src http://mirror.i3d.net/pub/mariadb/repo/5.5/debian wheezy main' state=present update_cache=yes
 
-- name: copy the apt-preferences file to give packages from the mariadb repository a higher priority
+  # This give packages from the mariadb repository a higher priority
+  # It has happened before that mariadb keeps mysql libraries backs
+- name: copy the apt-preferences file
   copy: src=50_mariadb dest=/etc/apt/preferences.d/50_mariadb
 
 - name: install mariadb
