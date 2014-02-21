@@ -1,4 +1,4 @@
-Role Name
+MariaDB55
 ========
 
 This role installs MariaDB 5.5 on Debian Wheezy.
@@ -51,4 +51,5 @@ Author Information
 ------------------
 
 Jasper N. Brouwer, jasper@nerdsweide.nl
+
 Ramon de la Fuente, ramon@delafuente.nl
