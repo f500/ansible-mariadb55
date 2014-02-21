@@ -7,7 +7,7 @@ It also installs python-mysqldb
 Requirements
 ------------
 
-Debian Wheezy with the package python-software-properties installed.
+Debian Wheezy with the package python-pycurl and python-software-properties installed.
 
 Role Variables
 --------------
