@@ -2,7 +2,11 @@ MariaDB55
 ========
 
 This role installs MariaDB 5.5 on Debian Wheezy.
-It also installs python-mysqldb
+It also installs python-mysqldb.
+
+On first run, the test database and test user is removed.
+A .my.cnf config file is written in /root so you can connect without
+entering a password with any mariadb/mysql client as user root.
 
 Requirements
 ------------
@@ -41,11 +45,17 @@ The tasks for resetting the root password are only run on install/first activati
     mariadb_skip_networking: false
     mariadb_socket: "/var/run/mysqld/mysqld.sock"
 
+Example Playbook
+-------------------------
+
+    - hosts: servers
+      roles:
+         - { role: f500.mariadb55, mariadb_root_password: some_random_string }
 
 License
 -------
 
-MIT
+LGPL
 
 Author Information
 ------------------
