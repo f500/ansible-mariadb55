@@ -4,10 +4,10 @@
   apt_key: "id=1BB943DB url=http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0xcbcb082a1bb943db state=present"
 
 - name: add mariadb repository
-  apt_repository: repo='deb http://mirror.i3d.net/pub/mariadb/repo/5.5/debian wheezy main' state=present update_cache=no
+  apt_repository: repo='deb http://mirror.i3d.net/pub/mariadb/repo/5.5/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main' state=present update_cache=no
 
 - name: add mariadb source repository
-  apt_repository: repo='deb-src http://mirror.i3d.net/pub/mariadb/repo/5.5/debian wheezy main' state=present update_cache=yes
+  apt_repository: repo='deb-src http://mirror.i3d.net/pub/mariadb/repo/5.5/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main' state=present update_cache=yes
 
   # This give packages from the mariadb repository a higher priority
   # It has happened before that mariadb keeps mysql libraries backs
