@@ -18,10 +18,10 @@ Role Variables
 
 All the following variables are set in defaults.
 
-Obsiously, the  mariadb_root_password would be a good candidate to set.
+Obviously, the mariadb_root_password would be a good candidate to set.
 _if you add passwords to a version control system, use ansible-vault, or git-crypt_
 
-Because this role is for a clean install - it assumes an emty root password.
+Because this role is for a clean install - it assumes an empty root password.
 The tasks for resetting the root password are only run on install/first activation of the service.
 
     # The root password is set, and added to .my.cnf for the root user
