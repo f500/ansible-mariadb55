@@ -84,7 +84,7 @@ innodb-log-files-in-group      = 2
 skip-character-set-client-handshake
 {% endif %}
 
-{% if mariadb_log-bin|default(False) %}
+{% if mariadb_log_bin|default(False) %}
 log-bin                  = {{ mariadb_log_bin }}
 {% endif %}
 
