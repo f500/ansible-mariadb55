@@ -61,7 +61,7 @@ pid-file                 = {{ mariadb_pid }}
 port                     = {{ mariadb_port }}
 read-buffer              = 256K
 read-rnd-buffer          = 512K
-server-id                = 1
+server-id                = {{ mariadb_server-id }}
 skip-external-locking
 socket                   = {{ mariadb_socket }}
 sort-buffer              = 8M

@@ -16,6 +16,7 @@ mariadb_query_cache_limit: false  # 128K
 mariadb_query_cache_size: false   # 64M
 mariadb_root_password: "secret"
 mariadb_share_dir: "/usr/share/mysql"
+mariadb_server-id: 1
 mariadb_skip_charset_handshake: true
 mariadb_skip_networking: false
 mariadb_socket: "/var/run/mysqld/mysqld.sock"
