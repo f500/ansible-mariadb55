@@ -61,7 +61,7 @@ pid-file                 = {{ mariadb_pid }}
 port                     = {{ mariadb_port }}
 read-buffer              = 256K
 read-rnd-buffer          = 512K
-server-id                = {{ mariadb_server-id }}
+server-id                = {{ mariadb_server_id }}
 skip-external-locking
 socket                   = {{ mariadb_socket }}
 sort-buffer              = 8M
@@ -85,7 +85,7 @@ skip-character-set-client-handshake
 {% endif %}
 
 {% if mariadb_log-bin|default(False) %}
-log-bin                  = {{ mariadb_log-bin }}
+log-bin                  = {{ mariadb_log_bin }}
 {% endif %}
 
 {% if mariadb_skip_networking|default(False) %}
