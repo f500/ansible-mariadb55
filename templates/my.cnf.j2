@@ -51,7 +51,6 @@ default-storage-engine   = InnoDB
 key-buffer               = 64M
 lc-messages              = en_US
 lc-messages-dir          = {{ mariadb_share_dir }}
-log-bin                  = mysqld-bin
 log-error                = {{ mariadb_mysqld_errorlog }}
 log-warnings             = 2
 long-query-time          = {{ mariadb_long_query_time }}
@@ -83,6 +82,10 @@ innodb-log-files-in-group      = 2
 
 {% if mariadb_skip_charset_handshake|default(False) %}
 skip-character-set-client-handshake
+{% endif %}
+
+{% if mariadb_log-bin|default(False) %}
+log-bin                  = {{ mariadb_log-bin }}
 {% endif %}
 
 {% if mariadb_skip_networking|default(False) %}
