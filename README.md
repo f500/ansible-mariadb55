@@ -32,6 +32,8 @@ The tasks for resetting the root password are only run on install/first activati
     mariadb_charsets_dir: "/usr/share/mysql/charsets"
     mariadb_config: "/etc/mysql/my.cnf"
     mariadb_data_dir: "/var/lib/mysql"
+    mariadb_install_db_bin: "/usr/bin/mysql_install_db"
+    mariadb_log_bin: false
     mariadb_long_query_time: 10
     mariadb_mysql_errorlog: "/var/log/mysql/mysql.err"
     mariadb_mysqld_errorlog: "/var/log/mysql/mysqld.err"
@@ -40,13 +42,15 @@ The tasks for resetting the root password are only run on install/first activati
     mariadb_port: 3306
     mariadb_query_cache_limit: false  # 128K
     mariadb_query_cache_size: false   # 64M
+    mariadb_root_password: "secret"
+    mariadb_server_id: 1
     mariadb_share_dir: "/usr/share/mysql"
     mariadb_skip_charset_handshake: true
     mariadb_skip_networking: false
     mariadb_socket: "/var/run/mysqld/mysqld.sock"
 
 Example Playbook
--------------------------
+----------------
 
     - hosts: servers
       roles:
@@ -55,7 +59,7 @@ Example Playbook
 License
 -------
 
-LGPL
+LGPLv3
 
 Author Information
 ------------------

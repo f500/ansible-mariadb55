@@ -4,10 +4,10 @@
   apt_key: "id=1BB943DB url=http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0xcbcb082a1bb943db state=present"
 
 - name: add mariadb repository
-  apt_repository: repo='deb http://mirror.i3d.net/pub/mariadb/repo/5.5/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main' state=present update_cache=no
+  apt_repository: "repo='deb http://mirror.i3d.net/pub/mariadb/repo/5.5/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main' state=present update_cache=no"
 
 - name: add mariadb source repository
-  apt_repository: repo='deb-src http://mirror.i3d.net/pub/mariadb/repo/5.5/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main' state=present update_cache=yes
+  apt_repository: "repo='deb-src http://mirror.i3d.net/pub/mariadb/repo/5.5/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main' state=present update_cache=yes"
 
   # This give packages from the mariadb repository a higher priority
   # It has happened before that mariadb keeps mysql libraries backs
@@ -21,16 +21,25 @@
 - name: install python-mysqldb
   apt: pkg=python-mysqldb state=present
 
+- name: stop mariadb
+  service: name=mysql state=stopped
+
 - name: write my.cnf
   template: "src=my.cnf.j2 dest={{ mariadb_config }} owner=root group=root mode=0644"
-  notify:
-    - restart mariadb
 
-- name: cleanup old files
+- name: remove old log files
   file: "path={{ item }} state=absent"
   with_items:
     - /var/log/mysql.err
     - /var/log/mysql.log
+
+- name: remove old data dir
+  file: "path=/var/lib/mysql state=absent"
+  when: mariadb_data_dir != '/var/lib/mysql'
+
+- name: create new data dir
+  command: "{{ mariadb_install_db_bin }} --basedir={{ mariadb_base_dir }} --datadir={{ mariadb_data_dir }} --user=mysql"
+  when: mariadb_data_dir != '/var/lib/mysql'
 
 - name: start mariadb
   service: name=mysql enabled=yes state=started
