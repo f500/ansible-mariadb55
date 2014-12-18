@@ -33,10 +33,6 @@
     - /var/log/mysql.err
     - /var/log/mysql.log
 
-- name: remove old data dir
-  file: "path=/var/lib/mysql state=absent"
-  when: mariadb_data_dir != '/var/lib/mysql'
-
 - name: create new data dir
   command: "{{ mariadb_install_db_bin }} --basedir={{ mariadb_base_dir }} --datadir={{ mariadb_data_dir }} --user=mysql"
   when: mariadb_data_dir != '/var/lib/mysql'
