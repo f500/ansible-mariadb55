@@ -14,6 +14,9 @@
 - name: copy the apt-preferences file
   copy: src=50_mariadb dest=/etc/apt/preferences.d/50_mariadb
 
+- name: remove libmysqlclient18 if it already exists
+  apt: pkg=libmysqlclient18 state=absent
+  
 - name: install mariadb
   apt: pkg=mariadb-server state=present
   register: installed_mariadb
