@@ -16,8 +16,9 @@
 
   #to resolve fatal apt conflicts, check if libmysqlclient is already installed by something else
 - name: Test if libmysqlclient18 is installed and which version
-  command: pkg-query -W -f='${source:Version}' libmysqlclient
+  command: dpkg-query -W -f='${source:Version}' libmysqlclient18
   register: mariadb55_libmysqlclient18_versioncheck
+  ignore_errors: yes
   
 - name: remove libmysqlclient18 if it already exists
   apt: pkg=libmysqlclient18 state=absent
