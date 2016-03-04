@@ -12,7 +12,7 @@ galaxy_info:
   - name: Ubuntu
     versions:
       - precise
-  categories:
+  galaxy_tags:
     - database
     - database:sql
 dependencies: []
