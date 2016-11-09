@@ -8,7 +8,7 @@ mariadb_data_dir: "/var/lib/mysql"
 mariadb_install_db_bin: "/usr/bin/mysql_install_db"
 mariadb_log_bin: false
 mariadb_long_query_time: 10
-mariabd_max_allowed_packet: "1M"
+mariadb_max_allowed_packet: "1M"
 mariadb_mysql_errorlog: "/var/log/mysql/mysql.err"
 mariadb_mysqld_errorlog: "/var/log/mysql/mysqld.err"
 mariadb_mysqld_slowlog: "/var/log/mysql/mysqld.slow"
