@@ -14,6 +14,16 @@
 - name: copy the apt-preferences file
   copy: src=50_mariadb dest=/etc/apt/preferences.d/50_mariadb
 
+  #to resolve fatal apt conflicts, check if libmysqlclient is already installed by something else
+- name: Test if libmysqlclient18 is installed and which version
+  command: dpkg-query -W -f='${source:Version}' libmysqlclient18
+  register: mariadb55_libmysqlclient18_versioncheck
+  ignore_errors: yes
+  
+- name: remove libmysqlclient18 if it already exists
+  apt: pkg=libmysqlclient18 state=absent
+  when: mariadb55_libmysqlclient18_versioncheck.stdout.find('no packages found') != -1 and mariadb55_libmysqlclient18_versioncheck.stdout.find('maria') != -1
+  
 - name: install mariadb
   apt: pkg=mariadb-server state=present
   register: installed_mariadb
